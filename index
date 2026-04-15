@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro Cristiano Nueva Vida España</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #f5f2ee;
+  --warm: #e8e0d4;
+  --gold: #f6a000;
+  --gold-dark: #c07800;
+  --gray: #7c7c7b;
+  --light-gray: #c8c4be;
+  --section-pad: clamp(4rem, 10vw, 8rem);
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--white); color: var(--black); overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  transition: padding 0.3s;
+}
+nav.scrolled { padding: 0.65rem 1.5rem; }
+.nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.nav-logo svg { width: 120px; height: auto; }
+.nav-logo svg .cls-1 { fill: #f5f2ee; }
+.nav-logo svg .cls-2 { fill: #f6a000; }
+.nav-links { display: none; gap: 2rem; }
+.nav-links a {
+  color: var(--light-gray); text-decoration: none;
+  font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: var(--black);
+  padding: 0.5rem 1.2rem; border-radius: 2px;
+  font-weight: 500; font-size: 0.8rem; letter-spacing: 0.05em;
+  text-decoration: none; text-transform: uppercase;
+  transition: opacity 0.2s; display: none;
+}
+.nav-cta:hover { opacity: 0.85; }
+.hamburger {
+  display: flex; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 4px;
+}
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99;
+  background: var(--black); flex-direction: column;
+  align-items: center; justify-content: center; gap: 2.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a { color: var(--white); text-decoration: none; font-family: var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem); transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--gold); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100svh; background: var(--black);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 8rem 1.5rem 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-grain {
+  position: absolute; inset: 0; opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px; pointer-events: none;
+}
+.hero-logo-big { width: clamp(200px, 55vw, 340px); margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 1s 0.2s forwards; }
+.hero-logo-big .cls-1 { fill: #f5f2ee; }
+.hero-logo-big .cls-2 { fill: #f6a000; }
+.hero-tag {
+  font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp 1s 0.4s forwards;
+}
+#hero h1 {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  color: var(--white); line-height: 1.05;
+  max-width: 820px; margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 1s 0.6s forwards;
+}
+#hero h1 em { color: var(--gold); font-style: normal; }
+.hero-eslogan {
+  font-size: clamp(1rem, 3vw, 1.3rem); color: var(--light-gray);
+  margin-bottom: 3rem; font-weight: 300;
+  opacity: 0; animation: fadeUp 1s 0.8s forwards;
+}
+.hero-btns {
+  display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+  opacity: 0; animation: fadeUp 1s 1s forwards;
+}
+.btn-primary {
+  background: var(--gold); color: var(--black);
+  padding: 0.9rem 2rem; border-radius: 2px;
+  font-weight: 500; font-size: 0.9rem; letter-spacing: 0.06em;
+  text-decoration: none; text-transform: uppercase; transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-outline {
+  border: 1px solid rgba(245,242,238,0.3); color: var(--white);
+  padding: 0.9rem 2rem; border-radius: 2px;
+  font-weight: 400; font-size: 0.9rem; letter-spacing: 0.06em;
+  text-decoration: none; text-transform: uppercase; transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.hero-scroll {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: var(--gray); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  animation: bounce 2s infinite;
+}
+.hero-scroll::after { content: ''; width: 1px; height: 40px; background: var(--gray); }
+
+/* ── SECCIONES BASE ── */
+section { padding: var(--section-pad) 1.5rem; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-label {
+  font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.8rem; display: block;
+}
+.section-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
+.section-body { font-size: 1.05rem; line-height: 1.8; color: #3a3a38; max-width: 640px; }
+.divider { width: 48px; height: 3px; background: var(--gold); margin-bottom: 2rem; }
+
+/* ── SOBRE NOSOTROS ── */
+#sobre { background: var(--black); color: var(--white); }
+#sobre .section-body { color: var(--light-gray); }
+
+/* ── PASTORES HERO SECTION ── */
+.pastores-hero {
+  display: grid; gap: 2px; margin-top: 4rem;
+}
+.pastor-hero-card {
+  position: relative; overflow: hidden; min-height: 480px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  cursor: pointer;
+}
+.pastor-hero-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center top;
+  transition: transform 0.6s ease;
+}
+.pastor-hero-card:hover .pastor-hero-img { transform: scale(1.04); }
+.pastor-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0.1) 100%);
+}
+.pastor-hero-content {
+  position: relative; z-index: 2; padding: 2.5rem 2rem;
+}
+.pastor-hero-role {
+  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.5rem;
+}
+.pastor-hero-name {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 700; color: var(--white); margin-bottom: 1rem; line-height: 1.1;
+}
+.pastor-hero-bio {
+  font-size: 0.95rem; color: var(--light-gray); line-height: 1.7;
+  max-width: 480px;
+}
+.pastor-placeholder-img {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.pastor-monogram {
+  width: 140px; height: 140px; border-radius: 50%;
+  border: 2px solid rgba(246,160,0,0.4);
+  background: rgba(246,160,0,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 3.5rem; font-weight: 700;
+  color: var(--gold); opacity: 0.6;
+}
+.pastor-photo-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(246,160,0,0.7); margin-bottom: 0.7rem;
+}
+.pastor-photo-tag svg { width: 12px; height: 12px; }
+
+/* Valores */
+.sobre-grid { display: grid; gap: 3rem; margin-top: 3.5rem; }
+.valores-grid { display: grid; gap: 1.2rem; }
+.valor-item { display: flex; align-items: flex-start; gap: 1rem; }
+.valor-num { font-family: var(--font-display); font-size: 2rem; color: var(--gold); opacity: 0.4; line-height: 1; min-width: 2.5rem; }
+.valor-item h4 { font-size: 1rem; font-weight: 500; margin-bottom: 0.3rem; }
+.valor-item p { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+
+/* ── QUÉ HACEMOS ── */
+#hacemos { background: var(--warm); }
+.hacemos-grid { display: grid; gap: 1.2rem; margin-top: 3rem; }
+.hacemos-card {
+  background: var(--white); border-radius: 4px; padding: 2rem 1.8rem;
+  border-left: 3px solid transparent; transition: border-color 0.3s, transform 0.2s;
+}
+.hacemos-card:hover { border-left-color: var(--gold); transform: translateX(4px); }
+.hacemos-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+.hacemos-card h3 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.6rem; }
+.hacemos-card p { font-size: 0.95rem; color: #555; line-height: 1.7; }
+
+/* ── GALERÍA VIDA ── */
+#vida {
+  background: var(--black); padding: 0;
+  overflow: hidden;
+}
+.vida-header { padding: var(--section-pad) 1.5rem clamp(2rem,5vw,4rem); }
+.vida-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+.vida-item {
+  position: relative; overflow: hidden; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.vida-item:hover { background: rgba(246,160,0,0.05); }
+.vida-item:first-child { grid-column: span 2; aspect-ratio: 16/7; }
+.vida-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+.vida-label {
+  font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gray); text-align: center;
+}
+.vida-item-inner { display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+.vida-item.featured .vida-icon { font-size: 3.5rem; }
+.vida-item.featured .vida-label { font-size: 0.95rem; }
+.vida-gold-line { width: 24px; height: 2px; background: var(--gold); margin: 0.6rem auto 0; }
+
+/* ── SEDES ── */
+#sedes { background: var(--black); color: var(--white); }
+#sedes .section-body { color: var(--light-gray); }
+.sedes-grid { display: grid; gap: 2rem; margin-top: 3rem; }
+.sede-card { border: 1px solid rgba(245,242,238,0.1); border-radius: 4px; overflow: hidden; transition: border-color 0.3s; }
+.sede-card:hover { border-color: var(--gold); }
+.sede-header { background: rgba(246,160,0,0.1); padding: 1.5rem 1.8rem; border-bottom: 1px solid rgba(245,242,238,0.08); }
+.sede-badge { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; display: block; }
+.sede-header h3 { font-family: var(--font-display); font-size: 1.4rem; }
+.sede-body { padding: 1.5rem 1.8rem; }
+.sede-info { display: flex; flex-direction: column; gap: 0.9rem; }
+.sede-row { display: flex; align-items: flex-start; gap: 0.8rem; }
+.sede-row-icon { color: var(--gold); font-size: 1rem; min-width: 20px; margin-top: 2px; }
+.sede-row-text { font-size: 0.95rem; color: var(--light-gray); line-height: 1.5; }
+.sede-row-text strong { color: var(--white); display: block; font-weight: 500; }
+.map-container { width: 100%; height: 220px; margin-top: 1.2rem; border-radius: 3px; overflow: hidden; border: 1px solid rgba(245,242,238,0.08); }
+.map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(80%) invert(90%) contrast(90%); }
+.grupos-lista { margin-top: 2rem; padding: 1.8rem; border: 1px solid rgba(245,242,238,0.1); border-radius: 4px; }
+.grupos-lista h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 1.2rem; }
+.grupos-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.grupo-tag { background: rgba(246,160,0,0.12); color: var(--gold); border: 1px solid rgba(246,160,0,0.3); padding: 0.35rem 0.9rem; border-radius: 2px; font-size: 0.8rem; letter-spacing: 0.05em; }
+
+/* ── CITA BÍBLICA ── */
+#cita {
+  background: var(--gold); padding: clamp(4rem,8vw,7rem) 1.5rem;
+  text-align: center;
+}
+.cita-text {
+  font-family: var(--font-display); font-style: italic;
+  font-size: clamp(1.5rem, 4vw, 2.6rem);
+  color: var(--black); line-height: 1.3; max-width: 760px;
+  margin: 0 auto 1.5rem;
+}
+.cita-ref {
+  font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(10,10,10,0.6);
+}
+
+/* ── TESTIMONIOS ── */
+#testimonios { background: var(--warm); }
+.testimonios-grid { display: grid; gap: 1.5rem; margin-top: 3rem; }
+.testimonio-card { background: var(--white); padding: 2rem 1.8rem; border-radius: 4px; position: relative; }
+.testimonio-quote { font-size: 3rem; line-height: 1; color: var(--gold); font-family: var(--font-display); position: absolute; top: 1rem; right: 1.5rem; opacity: 0.4; }
+.testimonio-card p { font-size: 1rem; line-height: 1.75; color: #3a3a38; margin-bottom: 1.5rem; font-style: italic; }
+.testimonio-author { display: flex; align-items: center; gap: 0.8rem; }
+.testimonio-initial { width: 38px; height: 38px; border-radius: 50%; background: var(--black); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; }
+.testimonio-author-info strong { display: block; font-size: 0.9rem; }
+.testimonio-author-info span { font-size: 0.8rem; color: var(--gray); }
+
+/* ── CONTACTO ── */
+#contacto { background: var(--black); color: var(--white); }
+#contacto .section-body { color: var(--light-gray); }
+.contacto-grid { display: grid; gap: 3rem; margin-top: 3rem; }
+.contacto-info { display: flex; flex-direction: column; gap: 1.5rem; }
+.contacto-item { display: flex; align-items: flex-start; gap: 1rem; }
+.contacto-icon { width: 40px; height: 40px; background: rgba(246,160,0,0.12); border: 1px solid rgba(246,160,0,0.3); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.contacto-item-text strong { display: block; font-size: 0.85rem; color: var(--gray); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.contacto-item-text a, .contacto-item-text span { color: var(--white); font-size: 0.95rem; text-decoration: none; }
+.contacto-item-text a:hover { color: var(--gold); }
+.social-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.social-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1rem; border: 1px solid rgba(245,242,238,0.15); border-radius: 3px; text-decoration: none; color: var(--light-gray); font-size: 0.85rem; transition: border-color 0.2s, color 0.2s; }
+.social-btn:hover { border-color: var(--gold); color: var(--gold); }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.85rem 1rem; background: rgba(245,242,238,0.05); border: 1px solid rgba(245,242,238,0.15); border-radius: 3px; color: var(--white); font-family: var(--font-body); font-size: 0.95rem; transition: border-color 0.2s; appearance: none; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-group select option { background: #1a1a1a; }
+.btn-submit { width: 100%; padding: 1rem; background: var(--gold); color: var(--black); border: none; border-radius: 2px; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
+.btn-submit:hover { opacity: 0.85; }
+.form-success { display: none; text-align: center; padding: 2rem; color: var(--gold); font-family: var(--font-display); font-size: 1.4rem; }
+
+/* ── FOOTER ── */
+footer { background: #050505; color: var(--gray); padding: 3rem 1.5rem 2rem; }
+.footer-inner { max-width: 1100px; margin: 0 auto; }
+.footer-top { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(245,242,238,0.06); }
+.footer-logo svg { width: 140px; }
+.footer-logo svg .cls-1 { fill: #555; }
+.footer-logo svg .cls-2 { fill: var(--gold); }
+.footer-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
+.footer-nav a { color: var(--gray); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.footer-nav a:hover { color: var(--gold); }
+.footer-bottom { padding-top: 1.5rem; text-align: center; font-size: 0.8rem; color: rgba(124,124,123,0.6); }
+
+/* ── FOTO HINT ── */
+.foto-hint {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(246,160,0,0.1); border: 1px dashed rgba(246,160,0,0.4);
+  border-radius: 3px; padding: 0.5rem 0.9rem;
+  font-size: 0.78rem; color: rgba(246,160,0,0.8);
+  margin-top: 1rem;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (min-width: 640px) {
+  .pastores-hero { grid-template-columns: 1fr 1fr; }
+  .pastores-hero .pastor-hero-card:first-child { grid-column: span 1; }
+  .hacemos-grid { grid-template-columns: 1fr 1fr; }
+  .testimonios-grid { grid-template-columns: 1fr 1fr; }
+  .vida-grid { grid-template-columns: repeat(4, 1fr); }
+  .vida-item:first-child { grid-column: span 2; }
+}
+@media (min-width: 900px) {
+  .nav-links { display: flex; }
+  .nav-cta { display: block; }
+  .hamburger { display: none; }
+  .sobre-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+  .valores-grid { grid-template-columns: 1fr 1fr; }
+  .hacemos-grid { grid-template-columns: repeat(3, 1fr); }
+  .sedes-grid { grid-template-columns: 1fr 1fr; }
+  .contacto-grid { grid-template-columns: 1fr 1fr; }
+  .testimonios-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-top { flex-direction: row; justify-content: space-between; text-align: left; }
+  .vida-grid { grid-template-columns: repeat(6, 1fr); }
+  .vida-item:first-child { grid-column: span 3; aspect-ratio: 4/3; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140.66 325.21">
+      <path class="cls-1" d="M121.7,270.8c0,7.59-2.31,13.6-6.92,18a21.59,21.59,0,0,1-29.3,0c-4.62-4.37-6.93-10.38-6.93-18s2.31-13.62,6.93-18a21.59,21.59,0,0,1,29.3,0C119.39,257.18,121.7,263.16,121.7,270.8Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M188.89,485.79c0,7.46-2.33,13.49-7.07,18a21.5,21.5,0,0,1-29.45.21c-4.63-4.38-6.92-10.45-6.92-18.21s2.29-13.54,6.92-17.78A21.5,21.5,0,0,1,167,462.27,21.75,21.75,0,0,1,181.82,468C186.56,472.4,188.89,478.33,188.89,485.79Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M425.06,492.92q0,17.52-15.44,17.51h-123q-35.43,0-51-9.49-26.59-15-26.58-54.38V363.38q0-64.06,70.63-64.06H411.36c8.6,0,12.91,6.55,12.91,19.59s-4.31,19.6-12.91,19.6H288.44q-40,0-40,23.51v82.4q0,26.79,45.51,26.8H412.61Q425.06,471.22,425.06,492.92Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M658.85,492.92q0,17.52-15.45,17.51h-123q-35.43,0-51-9.49-26.58-15-26.58-54.38V363.38q0-64.06,70.62-64.06H645.15c8.59,0,12.91,6.55,12.91,19.59s-4.32,19.6-12.91,19.6H522.22q-40,0-40,23.51v82.4q0,26.79,45.51,26.8H646.4Q658.84,471.22,658.85,492.92Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M889.55,493c0,11.59-4.16,17.41-12.49,17.41s-16.85-.7-18.21-2.09q-6.81-3.29-6.81-15.8V358.7q0-14.25-17-18.66a44.58,44.58,0,0,0-9.18-1.2q-6.24-.33-15.64-.33H763.07q-8.64,0-14.53.44a59.33,59.33,0,0,0-9.36,1.32q-16,4.43-16,18.71V493c0,11.58-4,17.4-12.19,17.4s-19.08-.7-20.43-2.09c-4.39-2.19-6.56-7.46-6.56-15.8V359.26q0-59.94,76.08-59.94h54.21q75.29,0,75.29,59.66Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M31.53,317.84c-1.57-7.41,3.34-13.46,10.9-13.46H106.6a13.8,13.8,0,0,1,13.77,13.77v179a13.8,13.8,0,0,1-13.77,13.76H96.29a13.81,13.81,0,0,1-13.76-13.76V353.76A13.8,13.8,0,0,0,68.76,340H50c-7.57,0-15-6.07-16.63-13.46Z" transform="translate(-31.24 -185.72)"/>
+      <path class="cls-2" d="M993.51,420.59l-5.82-17.76c-2.07-6.68,2.34-18.25,9.69-25.79l53.85-54.1,23.39-23,2.52,21.21c2,6.72-1.45,17.16-7.92,23.61l-75.69,75.84Z" transform="translate(-31.24 -185.72)"/><path class="cls-2" d="M975.78,389.39,970,371.64c-2.08-6.69,2.34-18.25,9.7-25.78l80.67-80.7,23.06-22.7,5.32,18.43c2,6.71-1.46,17.16-7.92,23.6l-90.21,90.35Z" transform="translate(-31.24 -185.72)"/><path class="cls-2" d="M958.05,358.89l-5.82-17.77c-2.09-6.68,2.31-18.24,9.68-25.78l104.46-104.61,25.38-25,5.33,18.43c2,6.71-1.47,17.16-7.93,23.6l-97.29,97.44Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M1156.9,300c-7-1.79-12.51-.67-16.44,3.31L996.63,447.2C988,454.42,981,445.81,981,445.81l-49.85-86.5q-4.27-7.24-15.12-7.26c-12.08,0-17,11.39-17,21.52,0,4.09,1.5,8.7,4.56,13.83l66.06,112.23c2.38,3.93,5.08,6.48,8.07,7.71l.34.14.52.2a16.44,16.44,0,0,0,5,.81,10.26,10.26,0,0,0,1.92,0,5.12,5.12,0,0,0,3-.69,22.05,22.05,0,0,0,7.8-5.21L1163.46,335.5c4.21-4.22,6.83-8.33,7.83-12.28C1173.78,313.39,1168.49,303,1156.9,300Z" transform="translate(-31.24 -185.72)"/>
+    </svg>
+  </a>
+  <div class="nav-links">
+    <a href="#sobre">Sobre nosotros</a>
+    <a href="#hacemos">Qué hacemos</a>
+    <a href="#sedes">Sedes</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <a href="#contacto" class="nav-cta">Únete</a>
+  <button class="hamburger" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre" class="mobile-link">Sobre nosotros</a>
+  <a href="#hacemos" class="mobile-link">Qué hacemos</a>
+  <a href="#sedes" class="mobile-link">Sedes</a>
+  <a href="#testimonios" class="mobile-link">Testimonios</a>
+  <a href="#contacto" class="mobile-link">Contacto</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grain"></div>
+  <svg class="hero-logo-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140.66 325.21">
+    <path class="cls-1" d="M121.7,270.8c0,7.59-2.31,13.6-6.92,18a21.59,21.59,0,0,1-29.3,0c-4.62-4.37-6.93-10.38-6.93-18s2.31-13.62,6.93-18a21.59,21.59,0,0,1,29.3,0C119.39,257.18,121.7,263.16,121.7,270.8Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M188.89,485.79c0,7.46-2.33,13.49-7.07,18a21.5,21.5,0,0,1-29.45.21c-4.63-4.38-6.92-10.45-6.92-18.21s2.29-13.54,6.92-17.78A21.5,21.5,0,0,1,167,462.27,21.75,21.75,0,0,1,181.82,468C186.56,472.4,188.89,478.33,188.89,485.79Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M425.06,492.92q0,17.52-15.44,17.51h-123q-35.43,0-51-9.49-26.59-15-26.58-54.38V363.38q0-64.06,70.63-64.06H411.36c8.6,0,12.91,6.55,12.91,19.59s-4.31,19.6-12.91,19.6H288.44q-40,0-40,23.51v82.4q0,26.79,45.51,26.8H412.61Q425.06,471.22,425.06,492.92Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M658.85,492.92q0,17.52-15.45,17.51h-123q-35.43,0-51-9.49-26.58-15-26.58-54.38V363.38q0-64.06,70.62-64.06H645.15c8.59,0,12.91,6.55,12.91,19.59s-4.32,19.6-12.91,19.6H522.22q-40,0-40,23.51v82.4q0,26.79,45.51,26.8H646.4Q658.84,471.22,658.85,492.92Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M889.55,493c0,11.59-4.16,17.41-12.49,17.41s-16.85-.7-18.21-2.09q-6.81-3.29-6.81-15.8V358.7q0-14.25-17-18.66a44.58,44.58,0,0,0-9.18-1.2q-6.24-.33-15.64-.33H763.07q-8.64,0-14.53.44a59.33,59.33,0,0,0-9.36,1.32q-16,4.43-16,18.71V493c0,11.58-4,17.4-12.19,17.4s-19.08-.7-20.43-2.09c-4.39-2.19-6.56-7.46-6.56-15.8V359.26q0-59.94,76.08-59.94h54.21q75.29,0,75.29,59.66Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M31.53,317.84c-1.57-7.41,3.34-13.46,10.9-13.46H106.6a13.8,13.8,0,0,1,13.77,13.77v179a13.8,13.8,0,0,1-13.77,13.76H96.29a13.81,13.81,0,0,1-13.76-13.76V353.76A13.8,13.8,0,0,0,68.76,340H50c-7.57,0-15-6.07-16.63-13.46Z" transform="translate(-31.24 -185.72)"/>
+    <path class="cls-2" d="M993.51,420.59l-5.82-17.76c-2.07-6.68,2.34-18.25,9.69-25.79l53.85-54.1,23.39-23,2.52,21.21c2,6.72-1.45,17.16-7.92,23.61l-75.69,75.84Z" transform="translate(-31.24 -185.72)"/><path class="cls-2" d="M975.78,389.39,970,371.64c-2.08-6.69,2.34-18.25,9.7-25.78l80.67-80.7,23.06-22.7,5.32,18.43c2,6.71-1.46,17.16-7.92,23.6l-90.21,90.35Z" transform="translate(-31.24 -185.72)"/><path class="cls-2" d="M958.05,358.89l-5.82-17.77c-2.09-6.68,2.31-18.24,9.68-25.78l104.46-104.61,25.38-25,5.33,18.43c2,6.71-1.47,17.16-7.93,23.6l-97.29,97.44Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M1156.9,300c-7-1.79-12.51-.67-16.44,3.31L996.63,447.2C988,454.42,981,445.81,981,445.81l-49.85-86.5q-4.27-7.24-15.12-7.26c-12.08,0-17,11.39-17,21.52,0,4.09,1.5,8.7,4.56,13.83l66.06,112.23c2.38,3.93,5.08,6.48,8.07,7.71l.34.14.52.2a16.44,16.44,0,0,0,5,.81,10.26,10.26,0,0,0,1.92,0,5.12,5.12,0,0,0,3-.69,22.05,22.05,0,0,0,7.8-5.21L1163.46,335.5c4.21-4.22,6.83-8.33,7.83-12.28C1173.78,313.39,1168.49,303,1156.9,300Z" transform="translate(-31.24 -185.72)"/>
+  </svg>
+  <span class="hero-tag">Centro Cristiano Nueva Vida España</span>
+  <h1>Una familia.<br><em>Una nueva vida.</em></h1>
+  <p class="hero-eslogan">"No juzgamos, amamos."</p>
+  <div class="hero-btns">
+    <a href="#sedes" class="btn-primary">Encuéntranos</a>
+    <a href="#sobre" class="btn-outline">Conoce nuestra historia</a>
+  </div>
+  <div class="hero-scroll">Descubre</div>
+</section>
+
+<!-- SOBRE NOSOTROS -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="reveal">
+        <span class="section-label">Sobre nosotros</span>
+        <h2 class="section-title" style="color:var(--white)">Una iglesia que te recibe como eres</h2>
+        <div class="divider"></div>
+        <p class="section-body">Centro Cristiano Nueva Vida nació con una visión clara: ser un lugar donde toda persona —sin importar su pasado, su historia o de dónde viene— pueda encontrar amor, comunidad y propósito.</p>
+        <p class="section-body" style="margin-top:1rem">Somos una iglesia evangélica con sedes en España, comprometida con la familia, la fe y el servicio. Liderada por los pastores Jorge García y Carmen Myriam Rodríguez, nuestra comunidad crece cada día unida por una misma convicción: que el amor transforma vidas.</p>
+        <div class="valores-grid" style="margin-top:2.5rem">
+          <div class="valor-item">
+            <span class="valor-num">01</span>
+            <div>
+              <h4 style="color:var(--white)">Amor incondicional</h4>
+              <p>No juzgamos. Aquí todos son bienvenidos tal y como son.</p>
+            </div>
+          </div>
+          <div class="valor-item">
+            <span class="valor-num">02</span>
+            <div>
+              <h4 style="color:var(--white)">Comunidad real</h4>
+              <p>Relaciones auténticas que van más allá del domingo.</p>
+            </div>
+          </div>
+          <div class="valor-item">
+            <span class="valor-num">03</span>
+            <div>
+              <h4 style="color:var(--white)">Fe viva</h4>
+              <p>Una fe que se expresa en hechos y transforma el entorno.</p>
+            </div>
+          </div>
+          <div class="valor-item">
+            <span class="valor-num">04</span>
+            <div>
+              <h4 style="color:var(--white)">Familia</h4>
+              <p>Somos una familia que se apoya, celebra y crece junta.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <!-- Texto antes de las tarjetas de pastores -->
+        <span class="section-label" style="margin-bottom:1.5rem">Nuestros pastores</span>
+        <p class="section-body" style="margin-bottom:2rem">Jorge y Myriam son el corazón de CCNV España. Con años de ministerio y un amor genuino por las personas, guían nuestra comunidad con sabiduría, fe y ternura.</p>
+        <!-- Pastores tarjetas compactas con zona de imagen -->
+        <div style="display:grid; gap:1.2rem;">
+          <!-- Pastor Jorge -->
+          <div style="background:rgba(245,242,238,0.04); border:1px solid rgba(245,242,238,0.1); border-radius:6px; overflow:hidden; display:flex; min-height:160px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(245,242,238,0.1)'">
+            <!-- Zona foto Jorge -->
+            <div id="foto-jorge" style="width:140px; flex-shrink:0; background:rgba(246,160,0,0.06); display:flex; align-items:center; justify-content:center; border-right:1px solid rgba(245,242,238,0.08); position:relative; overflow:hidden;">
+              <div style="text-align:center; padding:1rem;">
+                <div style="width:72px; height:72px; border-radius:50%; border:2px solid rgba(246,160,0,0.3); background:rgba(246,160,0,0.08); display:flex; align-items:center; justify-content:center; margin:0 auto 0.6rem; font-family:var(--font-display); font-size:1.8rem; font-weight:700; color:var(--gold);">JG</div>
+                <div style="font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(246,160,0,0.5);">Foto</div>
+              </div>
+              <!-- Indicador "añadir foto" -->
+              <div style="position:absolute; bottom:8px; left:0; right:0; text-align:center;">
+                <span style="font-size:0.55rem; letter-spacing:0.1em; color:rgba(246,160,0,0.35); text-transform:uppercase;">📷 Añadir foto</span>
+              </div>
+            </div>
+            <!-- Contenido Jorge -->
+            <div style="padding:1.5rem; flex:1;">
+              <div style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem;">Pastor principal</div>
+              <h3 style="font-family:var(--font-display); font-size:1.25rem; color:var(--white); margin-bottom:0.7rem; line-height:1.2;">Jorge García</h3>
+              <p style="font-size:0.88rem; color:var(--gray); line-height:1.65;">Hombre de fe, visión y corazón para las personas. Jorge lidera CCNV España con pasión por ver vidas transformadas y comunidades unidas en amor.</p>
+            </div>
+          </div>
+          <!-- Pastora Myriam -->
+          <div style="background:rgba(245,242,238,0.04); border:1px solid rgba(245,242,238,0.1); border-radius:6px; overflow:hidden; display:flex; min-height:160px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(245,242,238,0.1)'">
+            <!-- Zona foto Myriam -->
+            <div id="foto-myriam" style="width:140px; flex-shrink:0; background:rgba(246,160,0,0.06); display:flex; align-items:center; justify-content:center; border-right:1px solid rgba(245,242,238,0.08); position:relative; overflow:hidden;">
+              <div style="text-align:center; padding:1rem;">
+                <div style="width:72px; height:72px; border-radius:50%; border:2px solid rgba(246,160,0,0.3); background:rgba(246,160,0,0.08); display:flex; align-items:center; justify-content:center; margin:0 auto 0.6rem; font-family:var(--font-display); font-size:1.8rem; font-weight:700; color:var(--gold);">CM</div>
+                <div style="font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(246,160,0,0.5);">Foto</div>
+              </div>
+              <div style="position:absolute; bottom:8px; left:0; right:0; text-align:center;">
+                <span style="font-size:0.55rem; letter-spacing:0.1em; color:rgba(246,160,0,0.35); text-transform:uppercase;">📷 Añadir foto</span>
+              </div>
+            </div>
+            <!-- Contenido Myriam -->
+            <div style="padding:1.5rem; flex:1;">
+              <div style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem;">Pastora principal</div>
+              <h3 style="font-family:var(--font-display); font-size:1.25rem; color:var(--white); margin-bottom:0.7rem; line-height:1.2;">Carmen Myriam Rodríguez</h3>
+              <p style="font-size:0.88rem; color:var(--gray); line-height:1.65;">Con una unción especial para la familia y el cuidado pastoral, Myriam es un pilar fundamental de nuestra iglesia, siempre extendiendo gracia y amor a cada persona.</p>
+            </div>
+          </div>
+        </div>
+        <div class="foto-hint" style="font-size:0.75rem; color:rgba(246,160,0,0.7);">
+          💡 Para añadir las fotos reales de los pastores, sustituye las iniciales por etiquetas &lt;img&gt; en el HTML
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA VIDA COMUNITARIA -->
+<section id="vida" style="background:var(--black); padding: var(--section-pad) 0 0;">
+  <div class="vida-header container reveal">
+    <span class="section-label">Nuestra vida en comunidad</span>
+    <h2 class="section-title" style="color:var(--white)">Momentos que forman familia</h2>
+    <div class="divider"></div>
+    <p style="font-size:1rem; line-height:1.8; color:var(--light-gray); max-width:560px;">Cada reunión, cada abrazo, cada oración compartida es una foto de lo que somos. Aquí la iglesia no es un lugar, es la gente.</p>
+  </div>
+  <div class="vida-grid reveal" style="margin-top: 2.5rem;">
+    <!-- Celda grande: adoración -->
+    <div class="vida-item featured" style="background:rgba(246,160,0,0.04); border-color:rgba(246,160,0,0.08);">
+      <div class="vida-item-inner">
+        <div class="vida-icon">🎶</div>
+        <div class="vida-label">Momentos de adoración</div>
+        <div class="vida-gold-line"></div>
+        <div style="font-size:0.75rem; color:var(--gray); margin-top:0.7rem; text-align:center; max-width:220px;">Sube aquí fotos de tus cultos y momentos de alabanza</div>
+      </div>
+      <!-- Indicador zona imagen -->
+      <div style="position:absolute; top:1rem; right:1rem; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(246,160,0,0.4); border:1px dashed rgba(246,160,0,0.25); padding:0.3rem 0.6rem; border-radius:2px;">Zona de foto</div>
+    </div>
+    <!-- Celda: bautismos -->
+    <div class="vida-item">
+      <div class="vida-item-inner">
+        <div class="vida-icon">💧</div>
+        <div class="vida-label">Bautismos</div>
+        <div class="vida-gold-line"></div>
+      </div>
+      <div style="position:absolute; top:0.8rem; right:0.8rem; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(246,160,0,0.35); border:1px dashed rgba(246,160,0,0.2); padding:0.25rem 0.5rem; border-radius:2px;">📷 Foto</div>
+    </div>
+    <!-- Celda: grupos de vida -->
+    <div class="vida-item">
+      <div class="vida-item-inner">
+        <div class="vida-icon">👥</div>
+        <div class="vida-label">Grupos de vida</div>
+        <div class="vida-gold-line"></div>
+      </div>
+      <div style="position:absolute; top:0.8rem; right:0.8rem; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(246,160,0,0.35); border:1px dashed rgba(246,160,0,0.2); padding:0.25rem 0.5rem; border-radius:2px;">📷 Foto</div>
+    </div>
+    <!-- Celda: niños -->
+    <div class="vida-item">
+      <div class="vida-item-inner">
+        <div class="vida-icon">🧡</div>
+        <div class="vida-label">Ministerio infantil</div>
+        <div class="vida-gold-line"></div>
+      </div>
+      <div style="position:absolute; top:0.8rem; right:0.8rem; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(246,160,0,0.35); border:1px dashed rgba(246,160,0,0.2); padding:0.25rem 0.5rem; border-radius:2px;">📷 Foto</div>
+    </div>
+    <!-- Celda: misiones -->
+    <div class="vida-item">
+      <div class="vida-item-inner">
+        <div class="vida-icon">🌍</div>
+        <div class="vida-label">Misiones y servicio</div>
+        <div class="vida-gold-line"></div>
+      </div>
+      <div style="position:absolute; top:0.8rem; right:0.8rem; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(246,160,0,0.35); border:1px dashed rgba(246,160,0,0.2); padding:0.25rem 0.5rem; border-radius:2px;">📷 Foto</div>
+    </div>
+  </div>
+  <div style="background:rgba(246,160,0,0.06); border-top:1px solid rgba(246,160,0,0.1); padding:1.2rem 1.5rem; text-align:center;">
+    <p style="font-size:0.78rem; color:rgba(246,160,0,0.6); letter-spacing:0.1em; text-transform:uppercase;">📷 &nbsp; Sustituye cada celda por etiquetas &lt;img src="..."&gt; para mostrar vuestras fotos reales</p>
+  </div>
+</section>
+
+<!-- QUÉ HACEMOS -->
+<section id="hacemos">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Qué hacemos</span>
+      <h2 class="section-title">Más que un servicio dominical</h2>
+      <div class="divider"></div>
+      <p class="section-body">En CCNV creemos que la iglesia no es un edificio, es la gente. Por eso construimos espacios donde cada persona puede crecer, servir y encontrar su lugar.</p>
+    </div>
+    <div class="hacemos-grid">
+      <div class="hacemos-card reveal">
+        <div class="hacemos-icon">🙏</div>
+        <h3>Cultos semanales</h3>
+        <p>Celebramos juntos los miércoles y los domingos. Momentos de adoración, predicación y encuentro que renuevan y fortalecen.</p>
+      </div>
+      <div class="hacemos-card reveal" style="transition-delay:0.1s">
+        <div class="hacemos-icon">👨‍👩‍👧‍👦</div>
+        <h3>Grupos de vida</h3>
+        <p>Pequeños grupos en hogares distribuidos por toda España —Alicante, Mallorca y más— donde la vida en comunidad sucede de verdad.</p>
+      </div>
+      <div class="hacemos-card reveal" style="transition-delay:0.2s">
+        <div class="hacemos-icon">👶</div>
+        <h3>Ministerio infantil</h3>
+        <p>Un espacio seguro, divertido y lleno de amor donde los más pequeños aprenden sobre la fe de forma creativa.</p>
+      </div>
+      <div class="hacemos-card reveal" style="transition-delay:0.3s">
+        <div class="hacemos-icon">🎶</div>
+        <h3>Adoración</h3>
+        <p>La música es parte esencial de nuestra identidad. Nuestros equipos de alabanza crean atmósferas de encuentro genuino.</p>
+      </div>
+      <div class="hacemos-card reveal" style="transition-delay:0.4s">
+        <div class="hacemos-icon">🌍</div>
+        <h3>Misiones y servicio</h3>
+        <p>Salimos al entorno con proyectos sociales, ayuda a familias y trabajo comunitario porque la fe sin obras no es fe.</p>
+      </div>
+      <div class="hacemos-card reveal" style="transition-delay:0.5s">
+        <div class="hacemos-icon">📖</div>
+        <h3>Formación y discipulado</h3>
+        <p>Escuelas bíblicas, talleres y acompañamiento personal para que cada creyente crezca en su fe y en su carácter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CITA BÍBLICA -->
+<section id="cita">
+  <div class="container">
+    <div class="reveal">
+      <p class="cita-text">"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna."</p>
+      <p class="cita-ref">Juan 3:16</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEDES -->
+<section id="sedes">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Nuestras sedes</span>
+      <h2 class="section-title" style="color:var(--white)">Encuéntranos cerca de ti</h2>
+      <div class="divider"></div>
+      <p class="section-body">Tenemos sedes en Madrid y Barcelona, además de grupos activos en varias ciudades de España. Búscanos donde estés.</p>
+    </div>
+    <div class="sedes-grid">
+      <div class="sede-card reveal">
+        <div class="sede-header">
+          <span class="sede-badge">Sede principal · Madrid</span>
+          <h3>Arganda del Rey</h3>
+        </div>
+        <div class="sede-body">
+          <div class="sede-info">
+            <div class="sede-row">
+              <span class="sede-row-icon">📍</span>
+              <div class="sede-row-text"><strong>Dirección</strong>Arganda del Rey, Madrid, España</div>
+            </div>
+            <div class="sede-row">
+              <span class="sede-row-icon">📅</span>
+              <div class="sede-row-text"><strong>Horarios de reunión</strong>Miércoles · Domingos</div>
+            </div>
+            <div class="sede-row">
+              <span class="sede-row-icon">✉️</span>
+              <div class="sede-row-text"><strong>Contacto</strong><a href="mailto:ccnvespanya@gmail.com">ccnvespanya@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24278.!2d-3.4388!3d40.3017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd41887b2b5a9e87%3A0x7c3e6b2b5a9e87!2sArganda%20del%20Rey%2C%20Madrid!5e0!3m2!1ses!2ses!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa Arganda del Rey"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sede-card reveal" style="transition-delay:0.15s">
+        <div class="sede-header">
+          <span class="sede-badge">Sede · Cataluña</span>
+          <h3>Barcelona</h3>
+        </div>
+        <div class="sede-body">
+          <div class="sede-info">
+            <div class="sede-row">
+              <span class="sede-row-icon">📍</span>
+              <div class="sede-row-text"><strong>Dirección</strong>Barcelona, España</div>
+            </div>
+            <div class="sede-row">
+              <span class="sede-row-icon">📅</span>
+              <div class="sede-row-text"><strong>Horarios de reunión</strong>Miércoles · Domingos</div>
+            </div>
+            <div class="sede-row">
+              <span class="sede-row-icon">✉️</span>
+              <div class="sede-row-text"><strong>Contacto</strong><a href="mailto:ccnvespanya@gmail.com">ccnvespanya@gmail.com</a></div>
+            </div>
+          </div>
+          <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96442.!2d2.1734!3d41.3851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a49816718e30e5%3A0x44b0fb3d4f47660a!2sBarcelona!5e0!3m2!1ses!2ses!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa Barcelona"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grupos-lista reveal" style="margin-top:2rem">
+      <span class="section-label">Grupos por España</span>
+      <h3>También estamos en…</h3>
+      <div class="grupos-tags">
+        <span class="grupo-tag">Alicante</span>
+        <span class="grupo-tag">Mallorca</span>
+        <span class="grupo-tag">Valencia</span>
+        <span class="grupo-tag">Murcia</span>
+        <span class="grupo-tag">Y más ciudades</span>
+      </div>
+      <p style="color:var(--gray); font-size:0.9rem; margin-top:1.2rem">¿Vives en otra ciudad y quieres saber si hay un grupo cerca de ti? <a href="#contacto" style="color:var(--gold); text-decoration:none">Escríbenos →</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Testimonios</span>
+      <h2 class="section-title">Lo que dicen quienes ya forman parte</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="testimonios-grid">
+      <div class="testimonio-card reveal">
+        <span class="testimonio-quote">"</span>
+        <p>Llegué a CCNV en uno de los momentos más difíciles de mi vida. No me juzgaron, simplemente me abrazaron. Hoy tengo una familia aquí.</p>
+        <div class="testimonio-author">
+          <div class="testimonio-initial">MA</div>
+          <div class="testimonio-author-info"><strong>María A.</strong><span>Arganda del Rey</span></div>
+        </div>
+      </div>
+      <div class="testimonio-card reveal" style="transition-delay:0.1s">
+        <span class="testimonio-quote">"</span>
+        <p>Los grupos pequeños me cambiaron la vida. Por primera vez sentí que pertenecía a algo real. Gente auténtica que se cuida de verdad.</p>
+        <div class="testimonio-author">
+          <div class="testimonio-initial">RP</div>
+          <div class="testimonio-author-info"><strong>Roberto P.</strong><span>Barcelona</span></div>
+        </div>
+      </div>
+      <div class="testimonio-card reveal" style="transition-delay:0.2s">
+        <span class="testimonio-quote">"</span>
+        <p>Mis hijos aman el ministerio infantil. Saber que tienen un espacio seguro donde crecer en fe mientras yo adoro ha sido una bendición enorme.</p>
+        <div class="testimonio-author">
+          <div class="testimonio-initial">LC</div>
+          <div class="testimonio-author-info"><strong>Laura C.</strong><span>Alicante</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Contacto</span>
+      <h2 class="section-title" style="color:var(--white)">¿Quieres saber más?</h2>
+      <div class="divider"></div>
+      <p class="section-body">Escríbenos, síguenos en redes o ven un domingo. Aquí siempre hay un lugar para ti.</p>
+    </div>
+    <div class="contacto-grid">
+      <div class="contacto-info reveal">
+        <div class="contacto-item">
+          <div class="contacto-icon">✉️</div>
+          <div class="contacto-item-text"><strong>Email</strong><a href="mailto:ccnvespanya@gmail.com">ccnvespanya@gmail.com</a></div>
+        </div>
+        <div class="contacto-item">
+          <div class="contacto-icon">📅</div>
+          <div class="contacto-item-text"><strong>Cuándo reunirse</strong><span>Miércoles y Domingos<br>en todas nuestras sedes</span></div>
+        </div>
+        <div>
+          <p style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray); margin-bottom:0.8rem">Síguenos en redes</p>
+          <div class="social-row">
+            <a href="https://www.instagram.com/ccnvespana" target="_blank" rel="noopener" class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              Instagram
+            </a>
+            <a href="https://www.facebook.com/CCNVEspana" target="_blank" rel="noopener" class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              Facebook
+            </a>
+            <a href="https://www.youtube.com/@CcnvEspana" target="_blank" rel="noopener" class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#0a0a0a" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+              YouTube
+            </a>
+            <a href="https://wa.me/34000000000" target="_blank" rel="noopener" class="social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.557 4.116 1.533 5.845L.057 23.428a.5.5 0 0 0 .514.572l5.701-1.49A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-4.99-1.364l-.358-.213-3.717.971.991-3.613-.234-.372A9.78 9.78 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <div id="contactForm">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" placeholder="Tu nombre completo">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="tu@email.com">
+          </div>
+          <div class="form-group">
+            <label for="ciudad">Ciudad</label>
+            <input type="text" id="ciudad" placeholder="¿Desde dónde nos escribes?">
+          </div>
+          <div class="form-group">
+            <label for="interes">Me gustaría…</label>
+            <select id="interes">
+              <option value="">Selecciona una opción</option>
+              <option>Visitar un culto</option>
+              <option>Unirme a un grupo en mi ciudad</option>
+              <option>Saber más sobre la iglesia</option>
+              <option>Hablar con un pastor</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" placeholder="Cuéntanos algo…"></textarea>
+          </div>
+          <button class="btn-submit" onclick="enviarFormulario()">Enviar mensaje →</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <p>¡Gracias por escribirnos! 🙌</p>
+          <p style="font-family:var(--font-body); font-size:0.95rem; color:var(--light-gray); margin-top:0.8rem">Nos pondremos en contacto contigo pronto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140.66 325.21">
+          <path class="cls-1" d="M121.7,270.8c0,7.59-2.31,13.6-6.92,18a21.59,21.59,0,0,1-29.3,0c-4.62-4.37-6.93-10.38-6.93-18s2.31-13.62,6.93-18a21.59,21.59,0,0,1,29.3,0C119.39,257.18,121.7,263.16,121.7,270.8Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M188.89,485.79c0,7.46-2.33,13.49-7.07,18a21.5,21.5,0,0,1-29.45.21c-4.63-4.38-6.92-10.45-6.92-18.21s2.29-13.54,6.92-17.78A21.5,21.5,0,0,1,167,462.27,21.75,21.75,0,0,1,181.82,468C186.56,472.4,188.89,478.33,188.89,485.79Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M425.06,492.92q0,17.52-15.44,17.51h-123q-35.43,0-51-9.49-26.59-15-26.58-54.38V363.38q0-64.06,70.63-64.06H411.36c8.6,0,12.91,6.55,12.91,19.59s-4.31,19.6-12.91,19.6H288.44q-40,0-40,23.51v82.4q0,26.79,45.51,26.8H412.61Q425.06,471.22,425.06,492.92Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M658.85,492.92q0,17.52-15.45,17.51h-123q-35.43,0-51-9.49-26.58-15-26.58-54.38V363.38q0-64.06,70.62-64.06H645.15c8.59,0,12.91,6.55,12.91,19.59s-4.32,19.6-12.91,19.6H522.22q-40,0-40,23.51v82.4q0,26.79,45.51,26.8H646.4Q658.84,471.22,658.85,492.92Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M889.55,493c0,11.59-4.16,17.41-12.49,17.41s-16.85-.7-18.21-2.09q-6.81-3.29-6.81-15.8V358.7q0-14.25-17-18.66a44.58,44.58,0,0,0-9.18-1.2q-6.24-.33-15.64-.33H763.07q-8.64,0-14.53.44a59.33,59.33,0,0,0-9.36,1.32q-16,4.43-16,18.71V493c0,11.58-4,17.4-12.19,17.4s-19.08-.7-20.43-2.09c-4.39-2.19-6.56-7.46-6.56-15.8V359.26q0-59.94,76.08-59.94h54.21q75.29,0,75.29,59.66Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M31.53,317.84c-1.57-7.41,3.34-13.46,10.9-13.46H106.6a13.8,13.8,0,0,1,13.77,13.77v179a13.8,13.8,0,0,1-13.77,13.76H96.29a13.81,13.81,0,0,1-13.76-13.76V353.76A13.8,13.8,0,0,0,68.76,340H50c-7.57,0-15-6.07-16.63-13.46Z" transform="translate(-31.24 -185.72)"/>
+          <path class="cls-2" d="M993.51,420.59l-5.82-17.76c-2.07-6.68,2.34-18.25,9.69-25.79l53.85-54.1,23.39-23,2.52,21.21c2,6.72-1.45,17.16-7.92,23.61l-75.69,75.84Z" transform="translate(-31.24 -185.72)"/><path class="cls-2" d="M975.78,389.39,970,371.64c-2.08-6.69,2.34-18.25,9.7-25.78l80.67-80.7,23.06-22.7,5.32,18.43c2,6.71-1.46,17.16-7.92,23.6l-90.21,90.35Z" transform="translate(-31.24 -185.72)"/><path class="cls-2" d="M958.05,358.89l-5.82-17.77c-2.09-6.68,2.31-18.24,9.68-25.78l104.46-104.61,25.38-25,5.33,18.43c2,6.71-1.47,17.16-7.93,23.6l-97.29,97.44Z" transform="translate(-31.24 -185.72)"/><path class="cls-1" d="M1156.9,300c-7-1.79-12.51-.67-16.44,3.31L996.63,447.2C988,454.42,981,445.81,981,445.81l-49.85-86.5q-4.27-7.24-15.12-7.26c-12.08,0-17,11.39-17,21.52,0,4.09,1.5,8.7,4.56,13.83l66.06,112.23c2.38,3.93,5.08,6.48,8.07,7.71l.34.14.52.2a16.44,16.44,0,0,0,5,.81,10.26,10.26,0,0,0,1.92,0,5.12,5.12,0,0,0,3-.69,22.05,22.05,0,0,0,7.8-5.21L1163.46,335.5c4.21-4.22,6.83-8.33,7.83-12.28C1173.78,313.39,1168.49,303,1156.9,300Z" transform="translate(-31.24 -185.72)"/>
+        </svg>
+        <p style="margin-top:0.8rem; color:var(--gray); font-size:0.9rem; font-style:italic;">"No juzgamos, amamos."</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#sobre">Sobre nosotros</a>
+        <a href="#hacemos">Qué hacemos</a>
+        <a href="#sedes">Sedes</a>
+        <a href="#testimonios">Testimonios</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Centro Cristiano Nueva Vida España · <a href="mailto:ccnvespanya@gmail.com" style="color:inherit">ccnvespanya@gmail.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function enviarFormulario() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if (!nombre || !email) { alert('Por favor, rellena al menos el nombre y el email.'); return; }
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>
