@@ -982,18 +982,6 @@ footer {
 .footer-bottom a:hover { color: var(--gold); }
 
 /* ════════════════════════════════════════════
-   UTILIDADES
-   ════════════════════════════════════════════ */
-.foto-hint {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: rgba(246,160,0,0.08);
-  border: 1px dashed rgba(246,160,0,0.35);
-  border-radius: 3px; padding: 0.5rem 0.9rem;
-  font-size: 0.78rem; color: rgba(246,160,0,0.7);
-  margin-top: 1rem;
-}
-
-/* ════════════════════════════════════════════
    ANIMACIONES
    ════════════════════════════════════════════ */
 @keyframes fadeUp {
