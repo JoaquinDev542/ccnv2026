@@ -454,13 +454,13 @@ section { padding: var(--section-pad) 1.5rem; }
 .hacemos-card p  { font-size: 0.95rem; color: #555; line-height: 1.7; }
 
 /* ════════════════════════════════════════════
-   CARRUSEL DE CITAS BÍBLICAS
-   Corregido: sin solapamiento — altura dinámica
+   VERSÍCULO BÍBLICO — Estático (Juan 3:16)
    ════════════════════════════════════════════ */
 #cita {
   background: var(--gold);
   padding: clamp(3.5rem, 7vw, 6rem) 1.5rem;
   position: relative; overflow: hidden;
+  text-align: center;
 }
 /* Comilla decorativa de fondo */
 #cita::before {
@@ -474,99 +474,22 @@ section { padding: var(--section-pad) 1.5rem; }
   pointer-events: none; user-select: none;
 }
 
-.cita-inner {
-  max-width: 820px; margin: 0 auto;
-  display: flex; align-items: center; gap: 1rem;
+.cita-static {
   position: relative;
+  max-width: 780px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
 }
-
-/* Botones de navegación */
-.cita-arrow {
-  flex-shrink: 0;
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 2px solid rgba(0,0,0,0.25);
-  background: rgba(0,0,0,0.06); color: var(--black);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
-  z-index: 2;
-}
-.cita-arrow:hover {
-  background: rgba(0,0,0,0.15);
-  border-color: rgba(0,0,0,0.5);
-  transform: scale(1.08);
-}
-
-/* Contenedor del stage — flex column */
-.cita-stage {
-  flex: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
-}
-
-/*
-  Track con altura fija via CSS custom property.
-  JS calcula la altura del slide más alto y la asigna a --cita-h.
-  Así NO hay layout shift entre slides cortos y largos.
-*/
-.cita-track {
-  width: 100%;
-  position: relative;
-  height: var(--cita-h, 160px); /* fallback seguro */
-  transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Todos los slides: apilados con absolute dentro del track fijo */
-.cita-slide {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 0 0.5rem;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  transform: translateX(20px);
-}
-
-/* Slide entrante desde la derecha */
-.cita-slide.enter-right { transform: translateX(30px); }
-/* Slide entrante desde la izquierda */
-.cita-slide.enter-left  { transform: translateX(-30px); }
-
-/* Estado visible */
-.cita-slide.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-}
-
-/* Slide saliente */
-.cita-slide.exit-right { opacity: 0; transform: translateX(-30px); }
-.cita-slide.exit-left  { opacity: 0; transform: translateX(30px); }
 
 .cita-text {
   font-family: var(--font-display); font-style: italic;
-  font-size: clamp(1.1rem, 3.2vw, 2rem);
-  color: var(--black); line-height: 1.5;
-  margin-bottom: 1.2rem;
+  font-size: clamp(1.15rem, 3.2vw, 2rem);
+  color: var(--black); line-height: 1.6;
 }
 
 .cita-ref {
   font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(10,10,10,0.55);
+  color: rgba(10,10,10,0.55); font-style: normal;
 }
-
-/* Dots */
-.cita-dots {
-  display: flex; gap: 0.5rem; justify-content: center;
-}
-.cita-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: rgba(0,0,0,0.2); border: none; cursor: pointer; padding: 0;
-  transition: background 0.25s, transform 0.25s;
-}
-.cita-dot.active { background: rgba(0,0,0,0.6); transform: scale(1.3); }
 
 /* ════════════════════════════════════════════
    SEDES
@@ -667,105 +590,165 @@ section { padding: var(--section-pad) 1.5rem; }
 .grupos-lista a:hover { text-decoration: underline; }
 
 /* ════════════════════════════════════════════
-   TESTIMONIOS — CARRUSEL
+   TESTIMONIOS — Slider ventana deslizante
+   Desktop (≥900px): 3 cards visibles, avanza 1 a 1
+   Móvil (<900px):   1 card visible, desliza 1 a 1
    ════════════════════════════════════════════ */
-#testimonios { background: var(--warm); }
-
-.testi-carousel {
-  margin-top: 3rem;
-  position: relative;
+#testimonios {
+  background: linear-gradient(160deg, #1c1710 0%, #0f0c09 100%);
+  position: relative; overflow: hidden;
 }
 
-/* Track: contenedor de altura fija calculada por JS */
-.testi-track {
-  position: relative;
+/* Grano de fondo muy sutil */
+#testimonios::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px; opacity: 0.025;
+}
+
+/* Línea dorada decorativa en la parte superior */
+#testimonios::after {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* Títulos sobre fondo oscuro */
+#testimonios .section-label { color: var(--gold); }
+#testimonios .section-title { color: var(--white); }
+#testimonios .divider { background: rgba(246,160,0,0.5); }
+
+.testi-carousel { margin-top: 3rem; position: relative; }
+
+/* Viewport con fade lateral (desktop) para efecto de profundidad */
+.testi-viewport {
   overflow: hidden;
-  border-radius: var(--radius);
-  height: var(--testi-h, 260px);
-  transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 2.5%, black 97.5%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 2.5%, black 97.5%, transparent 100%);
 }
 
-/* Slides: todos apilados, transición con opacity + transform */
-.testi-slide {
-  position: absolute;
-  inset: 0;
-  background: var(--white);
-  padding: 2.5rem 2rem 2rem;
-  border-radius: var(--radius);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(40px);
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+/* Track */
+.testi-track {
+  display: flex;
+  gap: 1.25rem;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  --visible: 1;
+  padding: 0.5rem 0.5rem 1rem;
 }
-.testi-slide.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  position: absolute; /* mantenemos absolute para no afectar altura */
-}
-/* Clases de dirección — JS las añade/quita */
-.testi-slide.enter-right { transform: translateX(50px);  opacity: 0; }
-.testi-slide.enter-left  { transform: translateX(-50px); opacity: 0; }
-.testi-slide.exit-right  { transform: translateX(-50px); opacity: 0; }
-.testi-slide.exit-left   { transform: translateX(50px);  opacity: 0; }
 
+/* Desktop: 3 cards visibles */
+@media (min-width: 900px) {
+  .testi-track { --visible: 3; }
+}
+
+/* ── Card ── */
+.testi-card {
+  flex: 0 0 calc((100% - (var(--visible) - 1) * 1.25rem) / var(--visible));
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(246, 160, 0, 0.14);
+  border-radius: 10px;
+  padding: 2.4rem 2rem 1.8rem;
+  position: relative;
+  display: flex; flex-direction: column; gap: 1.4rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 28px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.testi-card:hover {
+  border-color: rgba(246, 160, 0, 0.45);
+  transform: translateY(-5px);
+  box-shadow: 0 14px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(246,160,0,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Comilla decorativa */
 .testi-quote {
-  font-size: 4rem; line-height: 1;
-  color: var(--gold); font-family: var(--font-display);
-  position: absolute; top: 1rem; right: 1.5rem;
-  opacity: 0.3; pointer-events: none;
+  font-family: var(--font-display);
+  font-size: 5.5rem; line-height: 1;
+  color: var(--gold);
+  position: absolute; top: 0.5rem; right: 1.4rem;
+  opacity: 0.15; pointer-events: none; user-select: none;
 }
-.testi-slide p {
-  font-size: 1.05rem; line-height: 1.8;
-  color: #3a3a38; font-style: italic;
-  margin-bottom: 1.8rem;
-  max-width: 640px;
-}
-.testi-author {
-  display: flex; align-items: center; gap: 0.8rem;
-  border-top: none;
-}
-.testi-avatar {
-  width: 42px; height: 42px; border-radius: 50%;
-  background: var(--black); color: var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
-}
-.testi-author strong { display: block; font-size: 0.9rem; }
-.testi-author span   { font-size: 0.8rem; color: var(--gray); }
 
-/* Controles del carrusel de testimonios */
+/* Texto */
+.testi-card p {
+  font-size: 0.97rem; line-height: 1.9;
+  color: rgba(232, 224, 212, 0.8);
+  font-style: italic;
+  flex: 1;
+}
+
+/* Separador + autor */
+.testi-author-wrap {
+  border-top: 1px solid rgba(246, 160, 0, 0.14);
+  padding-top: 1.2rem;
+}
+
+.testi-author {
+  display: flex; align-items: center; gap: 1rem;
+}
+
+/* Avatar con gradiente dorado */
+.testi-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 100%);
+  color: #1a1200;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 800;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  box-shadow: 0 3px 12px rgba(246,160,0,0.4);
+}
+
+.testi-author strong {
+  display: block;
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--white); letter-spacing: 0.01em;
+}
+.testi-author span {
+  font-size: 0.75rem;
+  color: var(--gold); opacity: 0.7;
+}
+
+/* ── Controles ── */
 .testi-controls {
   display: flex; align-items: center; justify-content: center;
-  gap: 1rem; margin-top: 1.5rem;
+  gap: 1.2rem; margin-top: 2.2rem;
 }
 
 .testi-arrow {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 2px solid rgba(10,10,10,0.2);
-  background: transparent; color: var(--black);
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1.5px solid rgba(246,160,0,0.35);
+  background: rgba(246,160,0,0.07);
+  color: var(--gold);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.2s;
+  cursor: pointer; flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
 }
 .testi-arrow:hover {
-  background: var(--black); color: var(--white);
-  border-color: var(--black);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
+  transform: scale(1.1);
+}
+.testi-arrow:disabled { opacity: 0.2; cursor: not-allowed; }
+.testi-arrow:disabled:hover {
+  background: rgba(246,160,0,0.07); color: var(--gold);
+  border-color: rgba(246,160,0,0.35); transform: none;
 }
 
-.testi-dots {
-  display: flex; gap: 0.5rem;
-}
+.testi-dots { display: flex; gap: 0.55rem; align-items: center; }
 .testi-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(10,10,10,0.2);
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(246,160,0,0.25);
   border: none; cursor: pointer; padding: 0;
   transition: background 0.25s, transform 0.25s;
 }
 .testi-dot.active {
-  background: var(--black);
-  transform: scale(1.3);
+  background: var(--gold);
+  transform: scale(1.4);
 }
 
 /* ════════════════════════════════════════════
