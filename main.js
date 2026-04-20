@@ -89,138 +89,17 @@
 })();
 
 /* ════════════════════════════════════════════
-   4. CARRUSEL DE CITAS BÍBLICAS
-   - Altura fija calculada desde el slide más alto → sin layout shift
-   - Transición direccional (slide izq/der) + crossfade
-   - Pausa en hover, swipe táctil
+   4. VERSÍCULO BÍBLICO — Estático (sin JS necesario)
+   La sección #cita ahora muestra Juan 3:16 de forma fija.
    ════════════════════════════════════════════ */
-(function initCarruselCitas() {
-  const track         = document.getElementById('citaTrack');
-  const dotsContainer = document.getElementById('citaDots');
-  const prevBtn       = document.getElementById('citaPrev');
-  const nextBtn       = document.getElementById('citaNext');
-  const citaSection   = document.getElementById('cita');
-
-  if (!track) return;
-
-  const slides     = Array.from(track.querySelectorAll('.cita-slide'));
-  const total      = slides.length;
-  let current      = 0;
-  let autoTimer    = null;
-  let isAnimating  = false;
-  const AUTO_DELAY = 6000;
-  const ANIM_DUR   = 560; // ms — debe coincidir con la transition CSS
-
-  /* ── Calcular y fijar la altura del track ── */
-  function calcHeight() {
-    // Hacemos todos los slides temporalmente visibles para medir
-    slides.forEach(s => {
-      s.style.position = 'relative';
-      s.style.opacity  = '1';
-      s.style.transform = 'none';
-    });
-    const maxH = Math.max(...slides.map(s => s.offsetHeight));
-    slides.forEach((s, i) => {
-      // Restaurar estado inicial
-      s.style.position  = '';
-      s.style.opacity   = i === 0 ? '1' : '0';
-      s.style.transform = i === 0 ? 'translateX(0)' : 'translateX(20px)';
-    });
-    // Aplicar al track via CSS custom property (permite transition en height)
-    track.style.setProperty('--cita-h', maxH + 'px');
-    // También fijamos en el elemento directamente como fallback
-    track.style.height = maxH + 'px';
-  }
-
-  // Calcular en load y en resize (debounced)
-  calcHeight();
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(calcHeight, 200);
-  }, { passive: true });
-
-  /* ── Crear dots ── */
-  slides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'cita-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', `Versículo ${i + 1}`);
-    dot.setAttribute('role', 'tab');
-    dot.addEventListener('click', () => goTo(i, i > current ? 'next' : 'prev'));
-    dotsContainer.appendChild(dot);
-  });
-
-  function getDots() {
-    return Array.from(dotsContainer.querySelectorAll('.cita-dot'));
-  }
-
-  function goTo(index, direction = 'next') {
-    if (isAnimating || index === current) return;
-    isAnimating = true;
-
-    const outSlide = slides[current];
-    current = ((index % total) + total) % total;
-    const inSlide  = slides[current];
-
-    /* Slide saliente: animar hacia fuera */
-    outSlide.classList.remove('active');
-    outSlide.classList.add(direction === 'next' ? 'exit-right' : 'exit-left');
-
-    /* Slide entrante: posicionar fuera y animar hacia dentro */
-    inSlide.classList.add(direction === 'next' ? 'enter-right' : 'enter-left');
-
-    // Forzar reflow para que la clase de entrada sea leída antes de animar
-    void inSlide.offsetHeight;
-
-    inSlide.classList.remove('enter-right', 'enter-left');
-    inSlide.classList.add('active');
-
-    /* Limpiar clases de salida tras la transición */
-    setTimeout(() => {
-      outSlide.classList.remove('exit-right', 'exit-left');
-      isAnimating = false;
-    }, ANIM_DUR);
-
-    /* Actualizar dots */
-    getDots().forEach((d, i) => d.classList.toggle('active', i === current));
-
-    resetAuto();
-  }
-
-  function next() { goTo((current + 1) % total, 'next'); }
-  function prev() { goTo((current - 1 + total) % total, 'prev'); }
-
-  function startAuto() { autoTimer = setInterval(next, AUTO_DELAY); }
-  function stopAuto()  { clearInterval(autoTimer); }
-  function resetAuto() { stopAuto(); startAuto(); }
-
-  prevBtn?.addEventListener('click', prev);
-  nextBtn?.addEventListener('click', next);
-
-  /* Swipe táctil */
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-  }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const delta = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(delta) > 40) delta < 0 ? next() : prev();
-  }, { passive: true });
-
-  /* Pausar en hover */
-  citaSection?.addEventListener('mouseenter', stopAuto);
-  citaSection?.addEventListener('mouseleave', startAuto);
-
-  startAuto();
-})();
 
 /* ════════════════════════════════════════════
-   5. CARRUSEL DE TESTIMONIOS
-   - Altura fija calculada (sin layout shift)
-   - Transición direccional crossfade + slide
-   - Autoplay con pausa en hover, swipe táctil
+   5. SLIDER DE TESTIMONIOS
+   Desktop (≥900px): 3 visibles, avanza 1 a 1
+   Móvil   (<900px): 1 visible,  avanza 1 a 1
+   Autoplay · Flechas · Dots · Swipe táctil
    ════════════════════════════════════════════ */
-(function initCarruselTestimonios() {
+(function initSliderTestimonios() {
   const track         = document.getElementById('testiTrack');
   const dotsContainer = document.getElementById('testiDots');
   const prevBtn       = document.getElementById('testiPrev');
@@ -229,103 +108,112 @@
 
   if (!track) return;
 
-  const slides     = Array.from(track.querySelectorAll('.testi-slide'));
-  const total      = slides.length;
-  let current      = 0;
+  const cards      = Array.from(track.querySelectorAll('.testi-card'));
+  const total      = cards.length;
+  let current      = 0;         // índice del primer card visible
   let autoTimer    = null;
-  let isAnimating  = false;
-  const AUTO_DELAY = 7000;
-  const ANIM_DUR   = 520;
+  const AUTO_DELAY = 5000;
 
-  /* ── Calcular y fijar la altura del track ── */
-  function calcHeight() {
-    slides.forEach(s => {
-      s.style.position  = 'relative';
-      s.style.opacity   = '1';
-      s.style.transform = 'none';
-    });
-    const maxH = Math.max(...slides.map(s => s.offsetHeight));
-    slides.forEach((s, i) => {
-      s.style.position  = '';
-      s.style.opacity   = i === 0 ? '1' : '0';
-      s.style.transform = i === 0 ? 'translateX(0)' : 'translateX(50px)';
-    });
-    track.style.setProperty('--testi-h', maxH + 'px');
-    track.style.height = maxH + 'px';
+  /* ── Cuántas cards son visibles según el viewport ── */
+  function getVisible() {
+    return window.innerWidth >= 900 ? 3 : 1;
   }
 
-  calcHeight();
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(calcHeight, 200);
-  }, { passive: true });
-
-  /* ── Crear dots ── */
-  slides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', `Testimonio ${i + 1}`);
-    dot.setAttribute('role', 'tab');
-    dot.addEventListener('click', () => goTo(i, i > current ? 'next' : 'prev'));
-    dotsContainer.appendChild(dot);
-  });
-
-  function getDots() {
-    return Array.from(dotsContainer.querySelectorAll('.testi-dot'));
+  /* ── Número máximo de posiciones (steps) ── */
+  function maxStep() {
+    return total - getVisible();
   }
 
-  function goTo(index, direction = 'next') {
-    if (isAnimating || index === current) return;
-    isAnimating = true;
+  /* ── Mover el track al índice 'index' ── */
+  function goTo(index) {
+    const vis   = getVisible();
+    const max   = maxStep();
+    // Clamp: no pasar de los límites
+    current     = Math.max(0, Math.min(index, max));
 
-    const outSlide = slides[current];
-    current = ((index % total) + total) % total;
-    const inSlide  = slides[current];
+    // Calcular el ancho de una card incluyendo su gap
+    // gap es 1.25rem = 20px (igual que en CSS)
+    const gap       = parseFloat(getComputedStyle(track).gap) || 20;
+    const cardW     = cards[0].offsetWidth;
+    const offset    = current * (cardW + gap);
 
-    /* Salida */
-    outSlide.classList.remove('active');
-    outSlide.classList.add(direction === 'next' ? 'exit-right' : 'exit-left');
+    track.style.transform = `translateX(-${offset}px)`;
 
-    /* Entrada: posicionar fuera del viewport */
-    inSlide.classList.add(direction === 'next' ? 'enter-right' : 'enter-left');
-    void inSlide.offsetHeight; // reflow
-    inSlide.classList.remove('enter-right', 'enter-left');
-    inSlide.classList.add('active');
+    // Actualizar dots
+    updateDots(vis);
 
-    setTimeout(() => {
-      outSlide.classList.remove('exit-right', 'exit-left');
-      isAnimating = false;
-    }, ANIM_DUR);
-
-    getDots().forEach((d, i) => d.classList.toggle('active', i === current));
-    resetAuto();
+    // Actualizar estado de flechas
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current >= max;
   }
 
-  function next() { goTo((current + 1) % total, 'next'); }
-  function prev() { goTo((current - 1 + total) % total, 'prev'); }
+  /* ── Crear / actualizar dots ── */
+  function buildDots() {
+    const vis   = getVisible();
+    const steps = maxStep() + 1; // número de posiciones posibles
+    dotsContainer.innerHTML = '';
 
-  function startAuto() { autoTimer = setInterval(next, AUTO_DELAY); }
+    for (let i = 0; i < steps; i++) {
+      const dot = document.createElement('button');
+      dot.className   = 'testi-dot' + (i === current ? ' active' : '');
+      dot.setAttribute('aria-label', `Posición ${i + 1}`);
+      dot.setAttribute('role', 'tab');
+      dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function updateDots(vis) {
+    const dots = Array.from(dotsContainer.querySelectorAll('.testi-dot'));
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  /* ── Autoplay ── */
+  function startAuto() {
+    autoTimer = setInterval(() => {
+      // Al llegar al final, vuelve al principio
+      goTo(current >= maxStep() ? 0 : current + 1);
+    }, AUTO_DELAY);
+  }
   function stopAuto()  { clearInterval(autoTimer); }
   function resetAuto() { stopAuto(); startAuto(); }
 
-  prevBtn?.addEventListener('click', prev);
-  nextBtn?.addEventListener('click', next);
+  /* ── Flechas ── */
+  prevBtn?.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+  nextBtn?.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
 
-  /* Swipe táctil */
+  /* ── Swipe táctil ── */
   let touchStartX = 0;
   track.addEventListener('touchstart', e => {
     touchStartX = e.touches[0].clientX;
   }, { passive: true });
   track.addEventListener('touchend', e => {
     const delta = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(delta) > 40) delta < 0 ? next() : prev();
+    if (Math.abs(delta) > 40) {
+      delta < 0 ? goTo(current + 1) : goTo(current - 1);
+      resetAuto();
+    }
   }, { passive: true });
 
-  /* Pausar en hover */
+  /* ── Pausa en hover ── */
   section?.addEventListener('mouseenter', stopAuto);
   section?.addEventListener('mouseleave', startAuto);
 
+  /* ── Recalcular en resize (debounced) ── */
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      // Si el current queda fuera del nuevo maxStep, ajustar
+      if (current > maxStep()) current = maxStep();
+      buildDots();
+      goTo(current);
+    }, 150);
+  }, { passive: true });
+
+  /* ── Inicializar ── */
+  buildDots();
+  goTo(0);
   startAuto();
 })();
 
