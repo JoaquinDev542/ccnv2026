@@ -3,8 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centro Cristiano Nueva Vida España</title>
+
+  <!-- ── SEO básico ── -->
+  <title>Centro Cristiano Nueva Vida España | Iglesia Evangélica</title>
+  <meta name="description" content="Centro Cristiano Nueva Vida España es una iglesia evangélica con sedes en Madrid y Barcelona. Una comunidad de fe, familia y amor donde todos son bienvenidos. Miércoles y domingos.">
+  <meta name="keywords" content="iglesia evangélica España, iglesia cristiana Madrid, iglesia Barcelona, CCNV España, centro cristiano nueva vida, iglesia Arganda del Rey, grupos de vida, iglesia cristiana">
+  <meta name="author" content="Centro Cristiano Nueva Vida España">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.ccnvespana.com/">
+
+  <!-- ── Open Graph (Facebook, WhatsApp, LinkedIn) ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.ccnvespana.com/">
+  <meta property="og:title" content="Centro Cristiano Nueva Vida España | Iglesia Evangélica">
+  <meta property="og:description" content="Una iglesia donde todos son bienvenidos tal y como son. Comunidad, fe y familia en Madrid, Barcelona y toda España.">
+  <meta property="og:image" content="https://www.ccnvespana.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="CCNV España">
+
+  <!-- ── Twitter / X Card ── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://www.ccnvespana.com/">
+  <meta name="twitter:title" content="Centro Cristiano Nueva Vida España | Iglesia Evangélica">
+  <meta name="twitter:description" content="Una iglesia donde todos son bienvenidos tal y como son. Comunidad, fe y familia en Madrid, Barcelona y toda España.">
+  <meta name="twitter:image" content="https://www.ccnvespana.com/og-image.jpg">
+
+  <!-- ── Schema.org — Church (JSON-LD) ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Church",
+    "name": "Centro Cristiano Nueva Vida España",
+    "alternateName": "CCNV España",
+    "description": "Iglesia evangélica con sedes en Madrid y Barcelona. Una comunidad de fe, familia y amor donde todos son bienvenidos.",
+    "url": "https://www.ccnvespana.com",
+    "email": "ccnvespanya@gmail.com",
+    "logo": "https://www.ccnvespana.com/logo.png",
+    "image": "https://www.ccnvespana.com/og-image.jpg",
+    "sameAs": [
+      "https://www.instagram.com/ccnvespana",
+      "https://www.facebook.com/CCNVEspana",
+      "https://www.youtube.com/@CcnvEspana"
+    ],
+    "location": [
+      {
+        "@type": "Place",
+        "name": "CCNV España — Arganda del Rey",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Arganda del Rey",
+          "addressRegion": "Madrid",
+          "addressCountry": "ES"
+        }
+      },
+      {
+        "@type": "Place",
+        "name": "CCNV España — Barcelona",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Barcelona",
+          "addressRegion": "Cataluña",
+          "addressCountry": "ES"
+        }
+      }
+    ],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Wednesday", "Sunday"],
+        "description": "Cultos en todas las sedes"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ── Favicon básico (reemplaza con tu favicon real) ── -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- ── Fuentes ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -260,50 +341,15 @@
 </section>
 
 <!-- ══════════════════════════════════════════
-     CARRUSEL DE CITAS BÍBLICAS
-     Corregido: altura dinámica, sin solapamiento
+     VERSÍCULO BÍBLICO — Estático
      ══════════════════════════════════════════ -->
-<section id="cita" aria-label="Versículos bíblicos">
-  <div class="cita-inner">
-    <button class="cita-arrow" id="citaPrev" aria-label="Versículo anterior">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-
-    <div class="cita-stage">
-      <div class="cita-track" id="citaTrack" role="region" aria-live="polite" aria-atomic="true">
-
-        <div class="cita-slide active" role="group" aria-roledescription="versículo">
-          <blockquote class="cita-text">"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna."</blockquote>
-          <cite class="cita-ref">Juan 3:16</cite>
-        </div>
-
-        <div class="cita-slide" role="group" aria-roledescription="versículo">
-          <blockquote class="cita-text">"Todo lo puedo en Cristo que me fortalece."</blockquote>
-          <cite class="cita-ref">Filipenses 4:13</cite>
-        </div>
-
-        <div class="cita-slide" role="group" aria-roledescription="versículo">
-          <blockquote class="cita-text">"El Señor es mi pastor; nada me faltará."</blockquote>
-          <cite class="cita-ref">Salmos 23:1</cite>
-        </div>
-
-        <div class="cita-slide" role="group" aria-roledescription="versículo">
-          <blockquote class="cita-text">"No juzguéis, y no seréis juzgados; no condenéis, y no seréis condenados; perdonad, y seréis perdonados."</blockquote>
-          <cite class="cita-ref">Lucas 6:37</cite>
-        </div>
-
-        <div class="cita-slide" role="group" aria-roledescription="versículo">
-          <blockquote class="cita-text">"Confía en el Señor de todo tu corazón, y no te apoyes en tu propia prudencia."</blockquote>
-          <cite class="cita-ref">Proverbios 3:5</cite>
-        </div>
-
-      </div>
-      <div class="cita-dots" id="citaDots" role="tablist" aria-label="Seleccionar versículo"></div>
-    </div>
-
-    <button class="cita-arrow" id="citaNext" aria-label="Versículo siguiente">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>
+<section id="cita" aria-label="Versículo bíblico">
+  <div class="cita-static">
+    <blockquote class="cita-text">
+      "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito,<br>
+      para que todo aquel que en él cree, no se pierda, mas tenga vida eterna."
+    </blockquote>
+    <cite class="cita-ref">Juan 3:16</cite>
   </div>
 </section>
 
@@ -388,7 +434,9 @@
 </section>
 
 <!-- ══════════════════════════════════════════
-     TESTIMONIOS — ahora como carrusel
+     TESTIMONIOS — Slider ventana deslizante
+     Desktop: 3 visibles, avanza 1 a 1
+     Móvil:   1 visible, desliza 1 a 1
      ══════════════════════════════════════════ -->
 <section id="testimonios">
   <div class="container">
@@ -398,58 +446,79 @@
       <div class="divider"></div>
     </div>
 
-    <!-- Carrusel de testimonios -->
     <div class="testi-carousel reveal" style="transition-delay:.15s">
-      <div class="testi-track" id="testiTrack" role="region" aria-live="polite" aria-atomic="true">
 
-        <article class="testi-slide active" role="group" aria-roledescription="testimonio">
-          <span class="testi-quote" aria-hidden="true">"</span>
-          <p>Llegué a CCNV en uno de los momentos más difíciles de mi vida. No me juzgaron, simplemente me abrazaron. Hoy tengo una familia aquí.</p>
-          <footer class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">MA</div>
-            <div>
-              <strong>María A.</strong>
-              <span>Arganda del Rey</span>
+      <!-- Viewport: la "ventana" que recorta el track -->
+      <div class="testi-viewport" id="testiViewport">
+        <div class="testi-track" id="testiTrack">
+
+          <article class="testi-card" role="group" aria-roledescription="testimonio">
+            <span class="testi-quote" aria-hidden="true">"</span>
+            <p>Llegué a CCNV en uno de los momentos más difíciles de mi vida. No me juzgaron, simplemente me abrazaron. Hoy tengo una familia aquí.</p>
+            <div class="testi-author-wrap">
+              <footer class="testi-author">
+                <div class="testi-avatar" aria-hidden="true">MA</div>
+                <div><strong>María A.</strong><span>Arganda del Rey</span></div>
+              </footer>
             </div>
-          </footer>
-        </article>
+          </article>
 
-        <article class="testi-slide" role="group" aria-roledescription="testimonio">
-          <span class="testi-quote" aria-hidden="true">"</span>
-          <p>Los grupos pequeños me cambiaron la vida. Por primera vez sentí que pertenecía a algo real. Gente auténtica que se cuida de verdad.</p>
-          <footer class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">RP</div>
-            <div>
-              <strong>Roberto P.</strong>
-              <span>Barcelona</span>
+          <article class="testi-card" role="group" aria-roledescription="testimonio">
+            <span class="testi-quote" aria-hidden="true">"</span>
+            <p>Los grupos pequeños me cambiaron la vida. Por primera vez sentí que pertenecía a algo real. Gente auténtica que se cuida de verdad.</p>
+            <div class="testi-author-wrap">
+              <footer class="testi-author">
+                <div class="testi-avatar" aria-hidden="true">RP</div>
+                <div><strong>Roberto P.</strong><span>Barcelona</span></div>
+              </footer>
             </div>
-          </footer>
-        </article>
+          </article>
 
-        <article class="testi-slide" role="group" aria-roledescription="testimonio">
-          <span class="testi-quote" aria-hidden="true">"</span>
-          <p>Mis hijos aman el ministerio infantil. Saber que tienen un espacio seguro donde crecer en fe mientras yo adoro ha sido una bendición enorme.</p>
-          <footer class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">LC</div>
-            <div>
-              <strong>Laura C.</strong>
-              <span>Alicante</span>
+          <article class="testi-card" role="group" aria-roledescription="testimonio">
+            <span class="testi-quote" aria-hidden="true">"</span>
+            <p>Mis hijos aman el ministerio infantil. Saber que tienen un espacio seguro donde crecer en fe mientras yo adoro ha sido una bendición enorme.</p>
+            <div class="testi-author-wrap">
+              <footer class="testi-author">
+                <div class="testi-avatar" aria-hidden="true">LC</div>
+                <div><strong>Laura C.</strong><span>Alicante</span></div>
+              </footer>
             </div>
-          </footer>
-        </article>
+          </article>
 
-        <article class="testi-slide" role="group" aria-roledescription="testimonio">
-          <span class="testi-quote" aria-hidden="true">"</span>
-          <p>Vine de visita un domingo y ya no me fui. Esta comunidad tiene algo especial: calidez genuina, sin pretensiones. Me sentí en casa desde el primer momento.</p>
-          <footer class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">DS</div>
-            <div>
-              <strong>David S.</strong>
-              <span>Valencia</span>
+          <article class="testi-card" role="group" aria-roledescription="testimonio">
+            <span class="testi-quote" aria-hidden="true">"</span>
+            <p>Vine de visita un domingo y ya no me fui. Esta comunidad tiene algo especial: calidez genuina, sin pretensiones. Me sentí en casa desde el primer momento.</p>
+            <div class="testi-author-wrap">
+              <footer class="testi-author">
+                <div class="testi-avatar" aria-hidden="true">DS</div>
+                <div><strong>David S.</strong><span>Valencia</span></div>
+              </footer>
             </div>
-          </footer>
-        </article>
+          </article>
 
+          <article class="testi-card" role="group" aria-roledescription="testimonio">
+            <span class="testi-quote" aria-hidden="true">"</span>
+            <p>CCNV me devolvió la esperanza. Encontré personas que oran contigo, que están ahí en lo bueno y en lo difícil. Es una comunidad de verdad.</p>
+            <div class="testi-author-wrap">
+              <footer class="testi-author">
+                <div class="testi-avatar" aria-hidden="true">AG</div>
+                <div><strong>Ana G.</strong><span>Mallorca</span></div>
+              </footer>
+            </div>
+          </article>
+
+          <article class="testi-card" role="group" aria-roledescription="testimonio">
+            <span class="testi-quote" aria-hidden="true">"</span>
+            <p>Como joven, a veces me sentía solo en la fe. En CCNV encontré un grupo de jóvenes increíble con quienes crecer y compartir la vida.</p>
+            <div class="testi-author-wrap">
+              <footer class="testi-author">
+                <div class="testi-avatar" aria-hidden="true">CM</div>
+                <div><strong>Carlos M.</strong><span>Murcia</span></div>
+              </footer>
+            </div>
+          </article>
+
+        </div>
       </div>
 
       <div class="testi-controls">
@@ -461,6 +530,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
+
     </div>
   </div>
 </section>
