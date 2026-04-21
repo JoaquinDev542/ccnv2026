@@ -220,18 +220,124 @@
 /* ════════════════════════════════════════════
    6. FORMULARIO DE CONTACTO
    ════════════════════════════════════════════ */
-function enviarFormulario() {
-  const nombre = document.getElementById('nombre')?.value.trim();
-  const email  = document.getElementById('email')?.value.trim();
+/* ════════════════════════════════════════════
+   6. FORMULARIO DE CONTACTO — con Google Sheets
+   ════════════════════════════════════════════ */
 
-  if (!nombre || !email) {
-    alert('Por favor, rellena al menos el nombre y el email.');
-    return;
+// ⚠️ SUSTITUYE ESTA URL POR LA QUE COPIASTE EN EL PASO 3
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywSxIeTilPGnC68iulsD8xfi9z2pxRXpY5LPzD-YkQUPZZxDqnvGuCX4DT1bdMRQC_/exec';
+
+function enviarFormulario() {
+
+  // ── Obtener referencias a los elementos ──
+  const nombreInput  = document.getElementById('nombre');
+  const emailInput   = document.getElementById('email');
+  const ciudadInput  = document.getElementById('ciudad');
+  const interesInput = document.getElementById('interes');
+  const mensajeInput = document.getElementById('mensaje');
+  const submitBtn    = document.querySelector('.btn-submit');
+
+  // ── Limpiar errores anteriores ──
+  limpiarErrores();
+
+  // ── Validar ──
+  const esValido = validarFormulario(nombreInput, emailInput);
+  if (!esValido) return; // Detener si hay errores
+
+  // ── Recoger datos ──
+  const datos = {
+    nombre  : nombreInput.value.trim(),
+    email   : emailInput.value.trim(),
+    ciudad  : ciudadInput?.value.trim()  || '',
+    interes : interesInput?.value        || '',
+    mensaje : mensajeInput?.value.trim() || ''
+  };
+
+  // ── Deshabilitar botón mientras se envía ──
+  submitBtn.disabled    = true;
+  submitBtn.textContent = 'Enviando…';
+
+  // ── Enviar a Google Sheets vía Apps Script ──
+  fetch(APPS_SCRIPT_URL, {
+    method      : 'POST',
+    // Apps Script no acepta application/json en modo no-cors,
+    // por eso usamos text/plain pero enviamos JSON como texto
+    headers     : { 'Content-Type': 'text/plain' },
+    body        : JSON.stringify(datos),
+    mode        : 'no-cors' // necesario para evitar error CORS con Apps Script
+  })
+  .then(() => {
+    // 'no-cors' siempre llega aquí aunque haya error en el script,
+    // así que mostramos éxito si no hubo error de red
+    mostrarExito();
+  })
+  .catch((error) => {
+    console.error('Error al enviar:', error);
+    mostrarErrorEnvio();
+    submitBtn.disabled    = false;
+    submitBtn.textContent = 'Enviar mensaje →';
+  });
+}
+
+/* ── Validación ── */
+function validarFormulario(nombreInput, emailInput) {
+  let valido = true;
+
+  // Validar nombre
+  if (!nombreInput.value.trim()) {
+    mostrarError(nombreInput, 'El nombre es obligatorio.');
+    valido = false;
   }
 
+  // Validar email
+  const emailVal   = emailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailVal) {
+    mostrarError(emailInput, 'El email es obligatorio.');
+    valido = false;
+  } else if (!emailRegex.test(emailVal)) {
+    mostrarError(emailInput, 'Introduce un email válido (ej: nombre@dominio.com).');
+    valido = false;
+  }
+
+  return valido;
+}
+
+/* ── Mostrar un error bajo el campo ── */
+function mostrarError(input, mensaje) {
+  input.classList.add('input-error');
+  const p       = document.createElement('p');
+  p.className   = 'form-error-msg';
+  p.textContent = mensaje;
+  p.setAttribute('role', 'alert');
+  input.parentNode.appendChild(p);
+}
+
+/* ── Limpiar todos los errores ── */
+function limpiarErrores() {
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  document.querySelectorAll('.form-error-msg').forEach(el => el.remove());
+}
+
+/* ── Mostrar mensaje de éxito ── */
+function mostrarExito() {
   const form    = document.getElementById('contactForm');
   const success = document.getElementById('formSuccess');
-
   if (form)    form.style.display    = 'none';
   if (success) success.style.display = 'block';
+}
+
+/* ── Mostrar mensaje de error de red ── */
+function mostrarErrorEnvio() {
+  const form = document.getElementById('contactForm');
+  // Insertar alerta de error al final del formulario si no existe ya
+  if (!document.getElementById('formErrorMsg')) {
+    const div       = document.createElement('div');
+    div.id          = 'formErrorMsg';
+    div.className   = 'form-send-error';
+    div.setAttribute('role', 'alert');
+    div.textContent = '❌ Hubo un problema al enviar. Por favor, inténtalo de nuevo o escríbenos directamente a ccnvespanya@gmail.com';
+    form.appendChild(div);
+  }
 }
